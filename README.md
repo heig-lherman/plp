@@ -1,2 +1,3 @@
-# plp
-Practical works for PLP (23/24) at HEIG-VD 
+# PLP
+
+Practical content for PLP (23/24) at HEIG-VD
