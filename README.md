@@ -1,3 +1,4 @@
-# PLP
+# PLP - Practical Works
 
-Practical content for PLP (23/24) at HEIG-VD
+- [Lives](lives)
+- [Practical Work 1 - wc implementation](pw01)
