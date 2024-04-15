@@ -1,0 +1,25 @@
+cabal-version:      3.6
+
+name:               funset
+version:            0.1.0.0
+license:            NONE
+author:             Loïc Herman, Massimo Stefani
+
+build-type:         Simple
+
+library
+    default-language: GHC2021
+    ghc-options:      -Wall
+    build-depends:    base ^>=4.17.2.1
+    exposed-modules:  Set
+    hs-source-dirs:   src
+
+test-suite funset-test
+    ghc-options:     -Wall
+    type:            exitcode-stdio-1.0
+    hs-source-dirs:  test
+    main-is:         Main.hs
+    build-depends:
+        base ^>=4.17.2.1,
+        hspec ^>=2.11.7,
+        funset
