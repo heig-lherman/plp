@@ -1,0 +1,40 @@
+cabal-version:      3.6
+
+name:               csvkit
+version:            0.1.0.0
+license:            NONE
+author:             Loïc Herman, Massimo Stefani
+
+build-type:         Simple
+
+library
+    hs-source-dirs:   lib
+    exposed-modules:  CSV
+    other-modules:
+        CSV.Aggregation,
+        CSV.File,
+        CSV.Filter,
+        CSV.Format,
+        CSV.Sort,
+        CSV.Utils
+    default-language: GHC2021
+    ghc-options:      -Wall
+    build-depends:    base ^>=4.17.2.1
+
+executable csvkit
+    hs-source-dirs:   src
+    main-is:          csvkit.hs
+    default-language: GHC2021
+    ghc-options:      -Wall
+    build-depends:
+        base ^>=4.17.2.1,
+        csvkit
+
+test-suite csvkit-test
+    type:            exitcode-stdio-1.0
+    hs-source-dirs:  test
+    main-is:         Main.hs
+    build-depends:
+        base ^>=4.17.2.1,
+        hspec ^>=2.11.7,
+        csvkit
