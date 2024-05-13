@@ -1,0 +1,94 @@
+class C {
+    int x;
+    int h = 3;
+    void a;
+
+    C(int x) {
+        this.x = x;
+        var a;
+    }
+
+    int getX() {
+        return this.x;
+    }
+
+    void setX(int x) {
+        this.x = x;
+    }
+
+    void setXH(int x, int h) {
+        this.x = x;
+        this.h = h;
+    }
+
+    void checkIf1() {
+        var b;
+        if (this.x) {
+        this.b = true;
+        } else {
+        this.b = false;
+        }
+    }
+
+    int whileTest() {
+        var i = 0;
+        while (i) {
+          this.b = 50;
+        }
+        return i;
+    }
+
+    String callExpressionTest(){
+        this.getX();
+    }
+
+    void accessExpressionTest(){
+        this.hola();
+    }
+
+    boolean hola(){
+        return true;
+    }
+
+    void returnTest(){
+        return 5;
+    }
+
+    void ifOnlyTest(){
+        if (true) {
+            return 5;
+        }
+    }
+
+    void ifElseTest(){
+        if (new MyObject()) {
+            return 5;
+        } else {
+            if (this.a = 1) {
+                return 5;
+            } else {
+                return 6;
+            }
+        }
+        if (this.a()) {
+            return 5;
+        } else {
+            return 6;
+        }
+    }
+
+    MyObject getMyObject(){
+        return new MyObject();
+    }
+
+    void setMyObject(MyObject myObject){
+        var myObject = new MyObject();
+        this.myObject2 = myObject;
+        this.myObject2 = new MyObject();
+    }
+
+}
+class B {
+    int x;
+    int h = 4;
+}

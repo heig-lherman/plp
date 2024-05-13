@@ -1,0 +1,11 @@
+class Person {
+    String name;
+
+    Person() {
+        this.name = "John Doe";
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+}

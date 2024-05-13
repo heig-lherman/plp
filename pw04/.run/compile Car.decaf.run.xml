@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="compile Car.decaf" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="decaf.Decaf" />
+    <module name="decaf-herman_stefani" />
+    <option name="PROGRAM_PARAMETERS" value="test/Car.decaf --show-tokens" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

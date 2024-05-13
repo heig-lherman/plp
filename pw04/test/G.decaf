@@ -1,0 +1,6 @@
+class G{
+    int i;
+    G(int i){
+        var this.i . i;
+    }
+}

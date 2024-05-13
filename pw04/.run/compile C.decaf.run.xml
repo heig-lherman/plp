@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="compile C.decaf" type="Application" factoryName="Application">
+    <classpathModifications>
+      <entry path="$PROJECT_DIR$/lib/gson.jar" />
+    </classpathModifications>
+    <option name="MAIN_CLASS_NAME" value="decaf.Decaf" />
+    <module name="decaf-herman_stefani" />
+    <option name="PROGRAM_PARAMETERS" value="test/C.decaf --show-tokens --show-ast" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,0 +1,11 @@
+class E {
+    int x;
+
+    C(int x) {
+        this.x = x;
+    }
+
+    int getX() {
+        return this.x ?? "yikes";
+    }
+}
