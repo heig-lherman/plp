@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+void exampleFunction(int param) {
+    int localVar;
+    int localVar;
+
+    {
+        int localVar;
+    }
+
+    return param;
+
+    globalVar = 42;
+}
+
+int main() {
+    int unusedVar;
+    char* str;
+
+    if (1) {
+        ;
+    } else {
+        int e;
+    }
+
+    while (0) {
+    }
+
+    puts(str);
+
+    exampleFunction(5);
+    return 0;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "zcc",
+  "version": "1.0.0",
+  "description": "A type-checker for Z.",
+  "main": "zcc.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node zcc.mjs",
+    "test": "ava"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "5.3.0",
+    "chevrotain": "11.0.3",
+    "commander": "7.2.0"
+  },
+  "devDependencies": {
+    "ava": "^6.1.3"
+  }
+}
