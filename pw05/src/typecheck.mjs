@@ -189,7 +189,7 @@ const visitFunction = (node, env, reporter) => {
     visitBlockStatement(node.body, localEnv, reporter);
 
     if (returnType !== 'void' && !localEnv.getCurrentFunction().returned) {
-        reporter.error(`Non-void function '${node.id.name}' does not always return a value.`, node.loc);
+        reporter.warning(`Non-void function '${node.id.name}' does not always return a value.`, node.loc);
     }
 };
 
@@ -247,12 +247,16 @@ const visitIfStatement = (node, env, reporter) => {
     }
 
     const { type: testType, ...rest } = condType;
-    if (!isInt(testType)) {
-        reporter.error('Condition in if statement must be of type \'int\'.', node.test.loc);
+    if (isChar(testType)) {
+        reporter.warning('Implicit type promotion from \'char\' to \'int\'.', node.test.loc);
+    } else if (!isInt(testType)) {
+        reporter.error('Condition in if statement must be of type promotable to \'int\'.', node.test.loc);
     }
 
-    const constant = rest.kind === 'literal' && isInt(testType)
-        ? rest.value !== 0
+    const constant = rest.kind === 'literal'
+        ? isInt(testType) 
+            ? rest.value !== 0
+            : isChar(testType) && rest.value !== '\0'
         : undefined;
     if (constant !== undefined) {
         reporter.warning(`Condition always evaluates to '${constant}'.`, node.test.loc);
@@ -305,14 +309,18 @@ const visitWhileStatement = (node, env, reporter) => {
     }
 
     const { type: testType, ...rest } = condType;
-    if (!isInt(testType)) {
-        reporter.error('Condition in while statement must be of type \'int\'.', node.test.loc);
+    if (isChar(testType)) {
+        reporter.warning('Implicit type promotion from \'char\' to \'int\'.', node.test.loc);
+    } else if (!isInt(testType)) {
+        reporter.error('Condition in while statement must be of type promotable to \'int\'.', node.test.loc);
     }
 
-    const constant = rest.kind === 'literal' ? rest.value !== 0 : undefined;
-    if (constant === true) {
-        reporter.error('Infinite loop, condition always evaluates to \'true\'.', node.test.loc);
-    } else if (constant === false) {
+    const constant = rest.kind === 'literal'
+        ? isInt(testType) 
+            ? rest.value !== 0
+            : isChar(testType) && rest.value !== '\0'
+        : undefined;
+    if (constant === false) {
         reporter.warning('Loop condition always evaluates to \'false\'.', node.test.loc);
         reporter.error('Unreachable loop body.', node.body.loc);
     }

@@ -363,7 +363,7 @@ test('should report non-void function with no return statement', t => {
 
     typecheck(ast, reporter);
 
-    assertError(t, reporter, 'Non-void function \'foo\' does not always return a value.', 2, 5);
+    assertWarning(t, reporter, 'Non-void function \'foo\' does not always return a value.', 2, 5);
 });
 
 test('should allow void function with empty return statement', t => {
@@ -459,6 +459,39 @@ test('should allow variable included in scope and sub scope', t => {
 test('should report error if condition does not evaluate to int', t => {
     const code = `
     int tst() {
+        int* p;
+        if (p)
+            return 0;
+    }
+    `;
+    const ast = codeToAst(code);
+    const reporter = createMockReporter();
+
+    typecheck(ast, reporter);
+
+    assertError(t, reporter, 'Condition in if statement must be of type promotable to \'int\'.', 4, 13);
+    assertWarning(t, reporter, 'Non-void function \'tst\' does not always return a value.', 2, 5);
+});
+
+test('should warn if type protion to int if if statement', t => {
+    const code = `
+    int main() {
+        char c;
+        if (c)
+            return 0;
+    }
+    `;
+    const ast = codeToAst(code);
+    const reporter = createMockReporter();
+
+    typecheck(ast, reporter);
+
+    assertWarning(t, reporter, 'Implicit type promotion from \'char\' to \'int\'.', 4, 13);
+});
+
+test('should handle constant positive char in if statement', t => {
+    const code = `
+    int main() {
         if ('a')
             return 0;
     }
@@ -468,8 +501,25 @@ test('should report error if condition does not evaluate to int', t => {
 
     typecheck(ast, reporter);
 
-    assertError(t, reporter, 'Condition in if statement must be of type \'int\'.', 3, 13);
-    assertError(t, reporter, 'Non-void function \'tst\' does not always return a value.', 2, 5);
+    assertWarning(t, reporter, 'Implicit type promotion from \'char\' to \'int\'.', 3, 13);
+    assertWarning(t, reporter, 'Condition always evaluates to \'true\'.', 3, 13);
+});
+
+test('should handle constant zero char in if statement', t => {
+    const code = `
+    int main() {
+        if ('\0')
+            return 0;
+    }
+    `;
+    const ast = codeToAst(code);
+    const reporter = createMockReporter();
+
+    typecheck(ast, reporter);
+
+    assertWarning(t, reporter, 'Implicit type promotion from \'char\' to \'int\'.', 3, 13);
+    assertWarning(t, reporter, 'Condition always evaluates to \'false\'.', 3, 13);
+    assertError(t, reporter, 'Unreachable branch.', 4, 13);
 });
 
 test('should warn if condition always evaluates to true', t => {
@@ -650,21 +700,6 @@ test('should handle function not pre-returned and not returned in else so stays 
     t.is(reporter.warnings.length, 1);
 });
 
-test('should report infinite loop', t => {
-    const code = `
-    int main() {
-        while (1) {}
-        return 0;
-    }
-    `;
-    const ast = codeToAst(code);
-    const reporter = createMockReporter();
-
-    typecheck(ast, reporter);
-
-    assertError(t, reporter, 'Infinite loop, condition always evaluates to \'true\'.', 3, 16);
-});
-
 test('should report unreachable loop body if condition always evaluates to false', t => {
     const code = `
     int main() {
@@ -702,6 +737,70 @@ test('should not mark function as returned if return in while body', t => {
     assertError(t, reporter, 'Unreachable loop body.', 3, 19);
     t.is(reporter.errors.length, 1);
     t.is(reporter.warnings.length, 1);
+});
+
+test('should error if loop condition type not promotable to int', t => {
+    const code = `
+    int main() {
+        int* p;
+        while (p)
+            return 0;
+    }
+    `;
+    const ast = codeToAst(code);
+    const reporter = createMockReporter();
+
+    typecheck(ast, reporter);
+
+    assertError(t, reporter, 'Condition in while statement must be of type promotable to \'int\'.', 4, 16);
+});
+
+test('should warn if type protion to int if while statement', t => {
+    const code = `
+    int main() {
+        char c;
+        while (c)
+            return 0;
+    }
+    `;
+    const ast = codeToAst(code);
+    const reporter = createMockReporter();
+
+    typecheck(ast, reporter);
+
+    assertWarning(t, reporter, 'Implicit type promotion from \'char\' to \'int\'.', 4, 16);
+});
+
+test('should handle constant positive char in while statement', t => {
+    const code = `
+    int main() {
+        while ('a')
+            return 0;
+    }
+    `;
+    const ast = codeToAst(code);
+    const reporter = createMockReporter();
+
+    typecheck(ast, reporter);
+
+    assertWarning(t, reporter, 'Implicit type promotion from \'char\' to \'int\'.', 3, 16);
+});
+
+test('should handle constant zero char in while statement', t => {
+    const code = `
+    int main() {
+        while ('\0')
+            return 0;
+    }
+    `;
+    const ast = codeToAst(code);
+    const reporter = createMockReporter();
+
+    typecheck(ast, reporter);
+
+    assertWarning(t, reporter, 'Implicit type promotion from \'char\' to \'int\'.', 3, 16);
+    assertWarning(t, reporter, 'Loop condition always evaluates to \'false\'.', 3, 16);
+    assertError(t, reporter, 'Unreachable loop body.', 4, 13);
 });
 
 test('should report return type mismatch', t => {
